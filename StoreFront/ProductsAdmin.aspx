@@ -95,7 +95,6 @@
                     <asp:Parameter Name="Price" Type="Decimal" />
                 </InsertParameters>
             </asp:SqlDataSource>
-
         </div>
     </div>
 </asp:Content>

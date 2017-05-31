@@ -12,7 +12,6 @@
     </asp:PlaceHolder>
     
     <asp:ContentPlaceHolder ID="Stylesheets" runat="server">
-        <link href="/Content/Site.css" rel="stylesheet" type="text/css"/>
     </asp:ContentPlaceHolder>
 
     <webopt:bundlereference runat="server" path="~/Content/css" />

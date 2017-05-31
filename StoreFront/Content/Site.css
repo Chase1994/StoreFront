@@ -22,6 +22,8 @@ textarea {
 @media screen and (min-width: 768px) {
     .jumbotron {
         margin-top: 20px;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     .body-content {
