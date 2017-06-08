@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5d107f7d72d646fe92a46baaeda8c93a" Name="Diagram1">
+        <EntityTypeShape EntityType="StoreFrontDBModel.Addresses" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontDBModel.OrderProducts" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontDBModel.Orders" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontDBModel.Products" Width="1.5" PointX="5.25" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontDBModel.ShoppingCartProducts" Width="1.5" PointX="7.5" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontDBModel.ShoppingCarts" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontDBModel.States" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontDBModel.Status" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontDBModel.Users" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_Addresses_States" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_Addresses_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_Orders_Addresses" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_OrderProducts_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_OrderProducts_Products" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_Orders_Status" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_Orders_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_ShoppingCartProducts_ShoppingCarts" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_ShoppingCarts_Users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

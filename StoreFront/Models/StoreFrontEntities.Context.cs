@@ -25,6 +25,14 @@ namespace StoreFront.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Addresses> Addresses { get; set; }
+        public virtual DbSet<OrderProducts> OrderProducts { get; set; }
+        public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<Products> Products { get; set; }
+        public virtual DbSet<ShoppingCartProducts> ShoppingCartProducts { get; set; }
+        public virtual DbSet<ShoppingCarts> ShoppingCarts { get; set; }
+        public virtual DbSet<States> States { get; set; }
+        public virtual DbSet<Status> Status { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
     }
 }

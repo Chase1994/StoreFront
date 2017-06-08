@@ -17,6 +17,21 @@ select,
 textarea {
     max-width: 280px;
 }
+a img {
+    width: 150px;
+    height: 150px;
+    display: block;
+}
+a:hover img {
+    transform: scale(3);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+#siteLogo {
+    background-image: url("../Images/siteLogo.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
@@ -31,3 +46,8 @@ textarea {
     }
 }
 
+.peopleCarouselImg img {
+  width: auto;
+  height: 750px;
+  max-height: 750px;
+}

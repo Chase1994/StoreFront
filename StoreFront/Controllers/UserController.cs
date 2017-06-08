@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using StoreFront.Models;
+using System.Data.Entity.Validation;
+using System.Web.Security;
 
 namespace StoreFront.Controllers
 {
@@ -19,7 +21,7 @@ namespace StoreFront.Controllers
         //Registration POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Registration([Bind(Exclude= "IsAdmin, DateCreated, CreatedBy, DataModified, ModifiedBy")]User user)
+        public ActionResult Registration([Bind(Exclude= "DateModified, ModifiedBy")]Users user)
         {
             bool Status = false;
             string message = "";
@@ -34,32 +36,110 @@ namespace StoreFront.Controllers
                     return View(user);
                 }
 
+                user.Password = Crypto.HashPassword(user.Password);
+                user.IsAdmin = false;
+                user.DateCreated = System.DateTime.Now;
+                user.CreatedBy = user.UserName;
+                user.ConfirmPassword = user.Password;
+
                 using (StoreFrontDBEntities dc = new StoreFrontDBEntities())
                 {
+                    //for debugging purposes (Entity Validation Exceptions)
                     dc.Users.Add(user);
-                    dc.SaveChanges();
+                    try
+                    {
+                        dc.SaveChanges();
+                        message = " You have successfully registered your account. Well done, that took a lot of skill. " +
+                            " You should be proud of yourself!";
+                        Status = true;
+                    }
+                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                    {
+                        Exception raise = dbEx;
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                string message1 = string.Format("{0}:{1}",
+                                    validationErrors.Entry.Entity.ToString(),
+                                    validationError.ErrorMessage);
+                                // raise a new exception nesting
+                                // the current instance as InnerException
+                                raise = new InvalidOperationException(message1, raise);
+                            }
+                        }
+                        throw raise;
+                    }
                 }
 
             }
             else
             {
-                message = " Invalid Request";
+                message = " Ya done goofed, check your inputs again mate.";
             }
-            //UserName already exists
-
-            //Password hashing
-
-            //save data to database
 
             ViewBag.Message = message;
             ViewBag.Status = Status;
             return View(user);
         }
         //Login
-
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
         //Login POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(UserLogin login, string ReturnUrl)
+        {
+            string message = "";
+            using (StoreFrontDBEntities dc = new StoreFrontDBEntities())
+            {
+                var v = dc.Users.Where(a => a.UserName == login.UserName).FirstOrDefault();
+                if (v != null)
+                {
+                    if (Crypto.ValidatePassword(login.Password, v.Password))
+                    {
+                        int timeout = login.RememberMe ? 525600 : 20;
+                        var ticket = new FormsAuthenticationTicket(login.UserName, login.RememberMe, timeout);
+                        string encrypted = FormsAuthentication.Encrypt(ticket);
+                        var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                        cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                        cookie.HttpOnly = true;
+                        Response.Cookies.Add(cookie);
 
+                        if (Url.IsLocalUrl(ReturnUrl))
+                        {
+                            return Redirect(ReturnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                    else
+                    {
+                        message = "Your username or password is unrecognized by the system.";
+                    }
+                }
+                else
+                {
+                    message = "Your username or password is unrecognized by the system.";
+                }
+            }
+            ViewBag.Message = message;
+            return View();
+        }
         //Logout
+        [Authorize]
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login", "User");
+        }
+
         [NonAction]
         public bool doesUserNameExist(string userName)
         {

@@ -1,0 +1,14 @@
+﻿@model StoreFront.Models.Users
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ Welcome @HttpContext.Current.User.Identity.Name
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        <p>This is your profile page. Take a look around. </p>
+        <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+    }
+}

@@ -1,0 +1,58 @@
+﻿@model PagedList.IPagedList<StoreFront.Models.Products>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Product Catalog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Index", "Products", FormMethod.Get))
+{
+    <p style="margin-top:20px; text-align: center;">
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+    <table class="table" style="margin-top: 20px;">
+        <tr>
+            <th>
+                @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Description
+            </th>
+
+            <th>
+                @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.PriceSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.ImageFile)*@
+                    @if (item.ImageFile != null)
+                    {
+                            <a href="#"><img src="@Url.Content(item.ImageFile)" class="img-responsive" /></a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+    
+<br>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+

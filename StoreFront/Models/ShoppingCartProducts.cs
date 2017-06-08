@@ -12,16 +12,17 @@ namespace StoreFront.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class ShoppingCartProducts
     {
-        public int UserID { get; set; }
-        public string UserName { get; set; }
-        public byte[] Password { get; set; }
-        public string EmailAddress { get; set; }
-        public Nullable<bool> IsAdmin { get; set; }
+        public int ShoppingCartProductID { get; set; }
+        public Nullable<int> ShoppingCartID { get; set; }
+        public Nullable<int> ProductID { get; set; }
+        public Nullable<int> Quantity { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }
         public string ModifiedBy { get; set; }
+    
+        public virtual Products Products { get; set; }
     }
 }
