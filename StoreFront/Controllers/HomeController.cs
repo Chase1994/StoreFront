@@ -9,7 +9,6 @@ namespace StoreFront.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        [Authorize]
         public ActionResult Index()
         {
             return View();
@@ -22,6 +21,7 @@ namespace StoreFront.Controllers
         }
 
         // GET: Home/Create
+        [Authorize]
         public new ActionResult Profile()
         {
             return View();

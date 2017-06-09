@@ -27,27 +27,52 @@ a:hover img {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 #siteLogo {
-    background-image: url("../Images/siteLogo.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    height:100%;
+    width:100%;
+}
+    #siteLogo img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
 }
 
+.video-container iframe, .video-container object, .video-container embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+}
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     .jumbotron {
         margin-top: 20px;
-        padding-left: 15px;
-        padding-right: 15px;
+        /*padding-left: 15px;
+        padding-right: 15px;*/
     }
 
     .body-content {
-        padding: 0;
+        padding: 10px;
+    }
+    .col-sm-4 {
+        text-align: center;
     }
 }
-
+.col-sm-4 {
+    text-align: center;
+}
 .peopleCarouselImg img {
   width: auto;
   height: 750px;
   max-height: 750px;
+}
+#googleMap {
+  margin-top:20px;
 }

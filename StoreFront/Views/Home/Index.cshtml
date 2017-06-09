@@ -2,10 +2,14 @@
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <body>
     <br />
     <p style="text-align:center;">Welcome @HttpContext.Current.User.Identity.Name</p>
-    <div class="jumbotron" id="siteLogo"></div>
+    <div id="siteLogo" class="container-fluid">
+        <img src="~/Images/Shred-logo.png" class="img-responsive"/>
+    </div>
+    
     <div class="container-fluid item peopleCarouselImg" id="carouselContainer">
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
@@ -42,49 +46,51 @@
         </div>
     </div>
    
-
+    <div class="container-fluid text-center">
+        <h2>SERVICES</h2>
+        <h4>What we offer</h4>
+        <div class="container-fluid" style="margin-left:-160px">
+            <div class="col-sm-4">
+                <span class="glyphicon glyphicon-ok"></span>
+                <h4>DECKS</h4>
+                <p>Over 5 to choose from!</p>
+            </div>
+            <div class="col-sm-4">
+                <span class="glyphicon glyphicon-wrench"></span>
+                <h4>TRUCKS</h4>
+                <p>We have some!</p>
+            </div>
+            <div class="col-sm-4">
+                <span class="glyphicon glyphicon-road"></span>
+                <h4>WHEELS</h4>
+                <p>Necessary for movement!</p>
+            </div>
+        </div>
+    </div>
+    <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/RJrcEEaJNEc" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="container-fluid" id="googleMap" style="height:400px;width:100%;"></div>
+    <script>
+        function myMap() {
+            var uluru = { lat: -37.857635, lng: 175.679869 };
+            var map = new google.maps.Map(document.getElementById('googleMap'), {
+                zoom: 4,
+                center: uluru
+            });
+            var marker = new google.maps.Marker({
+                position: uluru,
+                map: map
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA40R-nxotVqYBxtkmtBNS57BpI6TTaYlg&callback=myMap"></script>
 </body>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/js")
 }
-@*<script>
-    window.onload = function () {
-        carouselNormalization();
-    }
 
-    function carouselNormalization() {
-        var items = $('#myCarousel .item'),              // grab all the slides
-            heights = [],                                   // array to store heights
-            tallest;                                        // tallest slide
-
-        if (items.length) {
-            function normalizeHeights() {
-                items.each(function () {
-                    heights.push($(this).height());               // add each slide's height
-                });                                             // to the array
-
-                tallest = Math.max.apply(null, heights);        // find the largest height
-
-                items.each(function () {
-                    $(this).css('min-height', tallest + 'px');    // set each slide's minimum
-                });                                             // height to the largest
-            };
-
-            normalizeHeights();
-
-            $(window).on('resize orientationchange', function () {
-                tallest = 0, heights.length = 0;               // reset the variables
-
-                items.each(function () {
-                    $(this).css('min-height', '0');              // reset each slide's height
-                });
-
-                normalizeHeights();                            // run it again
-            });
-        }
-    }
-
-</script>*@
