@@ -1,0 +1,83 @@
+﻿@model IEnumerable<StoreFront.Models.ShoppingCartProducts>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    double totalPrice = 0;
+}
+
+<h2>@HttpContext.Current.User.Identity.Name's <span class="glyphicon glyphicon-shopping-cart"></span></h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Product
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Products.Price)
+        </th>
+        <th>
+            Subtotal
+        </th>
+        <th>
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Products.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Products.Price)
+        </td>
+        <td>
+            @{ 
+                var a = Convert.ToDouble(item.Quantity);
+                var b = Convert.ToDouble(item.Products.Price);
+                var total = a * b;
+                total = Math.Round(total, 2);
+                totalPrice += total;
+            }
+            @total
+        </td>
+        <td>
+            @if (item.Products.ImageFile != null)
+            {
+                <a href="#"><img src="@Url.Content(item.Products.ImageFile)" class="img-responsive" /></a>
+            }
+        </td>
+
+        <td>
+            <a href="@Url.Action("Delete", "Cart", item)" class="btn btn-info btn-group-sm btn_dlt">
+                <span class="glyphicon glyphicon-shopping-cart"></span> Remove From Cart
+            </a>
+        </td>
+    </tr>
+}
+
+</table>
+<div class="container-fluid text-center">
+    <h3>Total: $@totalPrice</h3>
+</div>
+<script>
+    $(".btn_dlt").click(function () {
+        window.alert("Item successfully deleted from your cart.");
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/js")
+}

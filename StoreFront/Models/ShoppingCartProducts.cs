@@ -15,9 +15,9 @@ namespace StoreFront.Models
     public partial class ShoppingCartProducts
     {
         public int ShoppingCartProductID { get; set; }
-        public Nullable<int> ShoppingCartID { get; set; }
-        public Nullable<int> ProductID { get; set; }
-        public Nullable<int> Quantity { get; set; }
+        public int ShoppingCartID { get; set; }
+        public int ProductID { get; set; }
+        public int Quantity { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }

@@ -133,9 +133,9 @@ namespace StoreFront.Controllers
         }
         //Logout
         [Authorize]
-        [HttpPost]
         public ActionResult Logout()
         {
+            Session.Clear();
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "User");
         }
@@ -148,6 +148,43 @@ namespace StoreFront.Controllers
                 var v = dc.Users.Where(a => a.UserName == userName).FirstOrDefault();
                 return v != null;
             }
+        }
+
+        [Authorize]
+        public ActionResult EditProfile()
+        {
+            StoreFrontDBEntities dc = new StoreFrontDBEntities();
+            if (User.Identity.IsAuthenticated)
+            {
+                string username = User.Identity.Name;
+                Users user = dc.Users.FirstOrDefault(u => u.UserName.Equals(username));
+
+                Users model = new Users();
+                model.UserName = user.UserName;
+                model.EmailAddress = user.EmailAddress;
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Login", "User");
+            }
+        }
+        [HttpPost]
+        public ActionResult EditProfile(Users userprofile)
+        {
+            StoreFrontDBEntities dc = new StoreFrontDBEntities();
+            if (ModelState.IsValid)
+            {
+                string username = User.Identity.Name;
+                Users user = dc.Users.FirstOrDefault(u => u.UserName.Equals(username));
+                user.UserName = userprofile.UserName;
+                user.EmailAddress = userprofile.EmailAddress;
+
+                dc.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                dc.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
+            return View(userprofile);
         }
     }
 }

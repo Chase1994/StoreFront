@@ -15,12 +15,14 @@
     <table class="table" style="margin-top: 20px;">
         <tr>
             <th>
+
+            </th>
+            <th>
                 @Html.ActionLink("Product Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
             </th>
             <th>
                 Description
             </th>
-
             <th>
                 @Html.ActionLink("Price", "Index", new { sortOrder = ViewBag.PriceSortParm, currentFilter = ViewBag.CurrentFilter })
             </th>
@@ -29,6 +31,11 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    <a href="@Url.Action("AddProduct", "AddToCart",item)" class="btn btn-info btn-group-sm btn_add">
+                        <span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart
+                    </a>
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ProductName)
                 </td>
@@ -39,7 +46,6 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    @*@Html.DisplayFor(modelItem => item.ImageFile)*@
                     @if (item.ImageFile != null)
                     {
                             <a href="#"><img src="@Url.Content(item.ImageFile)" class="img-responsive" /></a>
@@ -55,4 +61,16 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
+<script>
+    $(".btn_add").click(function () {
+        window.alert("Item successfully added to your cart.");
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/js")
+}
 

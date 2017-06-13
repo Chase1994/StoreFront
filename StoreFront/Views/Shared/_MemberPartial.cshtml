@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "MemberPartial";
+}
+<div class="collapse navbar-collapse" id="NavBar">
+    <ul class="nav navbar-nav">
+        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("Search", "Index", "Products")</li>
+        <li>@Html.ActionLink("Profile", "EditProfile", "User")</li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="~/Cart/Index"><span id="cart" class="glyphicon glyphicon-shopping-cart"> </span> Cart</a></li>
+        <li><a href="~/User/EditProfile"><span class="glyphicon glyphicon-user"> @HttpContext.Current.User.Identity.Name</span></a></li>
+        <li><a href="~/User/Logout"><span class="glyphicon glyphicon-log-out"> Logout</span></a></li>
+    </ul>
+</div>
+
+<script>
+    $(document).ready(function () {
+             $.ajax({
+             url: '@Url.Action("GetQuantity", "Cart")',
+             method: "POST",
+             success: function (data) {
+                 $('#cart').html(data);
+             }
+        })
+    });
+</script>

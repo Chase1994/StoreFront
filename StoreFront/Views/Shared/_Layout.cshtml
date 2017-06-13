@@ -21,17 +21,14 @@
                 </button>
                 @Html.ActionLink("Shred - Skateboards", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="collapse navbar-collapse" id="NavBar">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Search", "Index", "Products")</li>
-                    <li>@Html.ActionLink("Profile", "Profile", "User")</li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="~/User/Registration"><span class="glyphicon glyphicon-user"> Register</span></a></li>
-                    <li><a href="~/User/Login"><span class="glyphicon glyphicon-log-in"> Login</span></a></li>
-                </ul>
-            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                @Html.Partial("~/Views/Shared/_MemberPartial.cshtml");
+            }
+            else
+            {
+                @Html.Partial("~/Views/Shared/_GuestPartial.cshtml");
+            }
         </div>
     </nav>
     <div class="container body-content" style="background-color: white; border-radius: 50px; ">
