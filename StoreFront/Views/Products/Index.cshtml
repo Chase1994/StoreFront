@@ -11,6 +11,13 @@
         <input type="submit" value="Search" />
     </p>
 }
+    @if (Model.Count == 0)
+    {
+        <br />
+        <h3>
+            No products were found by your search.
+        </h3>
+    }
 
     <table class="table" style="margin-top: 20px;">
         <tr>
@@ -28,13 +35,14 @@
             </th>
             <th></th>
         </tr>
+       
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    <a href="@Url.Action("AddProduct", "AddToCart",item)" class="btn btn-info btn-group-sm btn_add">
+                    <button class="btn btn-info btn-group-sm btn_add"  data-assigned-id ="@item.ProductID" onclick="AddToCart(this)">
                         <span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart
-                    </a>
+                    </button>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ProductName)
@@ -48,7 +56,7 @@
                 <td>
                     @if (item.ImageFile != null)
                     {
-                            <a href="#"><img src="@Url.Content(item.ImageFile)" class="img-responsive" /></a>
+                            <a href="#"><img src="../../Images/@Url.Content(item.ImageFile)" class="img-responsive" /></a>
                     }
                 </td>
             </tr>
@@ -62,9 +70,21 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
 <script>
-    $(".btn_add").click(function () {
-        window.alert("Item successfully added to your cart.");
-    });
+
+    function AddToCart(elem)
+    {
+        var itemID = $(elem).data('assigned-id');
+         $.ajax({
+            method: "POST",
+            data: {prodID: itemID},
+            url: '@Url.Action("AddProduct", "AddToCart")',
+
+            success: function (data) {
+                $("#cart").html(data);
+            }
+        })
+    }
+
 </script>
 
 @section Scripts {

@@ -1,0 +1,41 @@
+﻿@model StoreFront.Data.Order
+
+@{
+    ViewBag.Title = "OrderAdminDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class ="container" id="tabs">
+    <h2>Order Details</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tabs-1">General</a></li>
+        <li><a href="#tabs-2">Address</a></li>
+        <li><a href="#tabs-3">Products</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tabs-1" class="tab-pane fade in active">
+            @Html.Partial("_GeneralPartial", Model)
+        </div>
+        <div id="tabs-2" class="tab-pane fade">
+            @Html.Partial("_AddressPartial", Model)
+        </div>
+        <div id="tabs-3" class="tab-pane fade">
+           @Html.Action("OutputProductPartial", "Order", Model)
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $(".nav-tabs a").click(function(){
+        $(this).tab('show');
+    });
+});
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/js")
+}

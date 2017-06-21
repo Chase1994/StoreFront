@@ -58,14 +58,11 @@ namespace StoreFront.Controllers
                     products = products.OrderBy(p => p.ProductName);
                     break;
             }
-            int pageSize = 5;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(products.ToPagedList(pageNumber, pageSize));
         }
-        //public ActionResult AddToCart(int productID, int userID)
-        //{
 
-        //}
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<StoreFront.Data.OrderProduct>
+@{
+    ViewBag.Title = "ProductPartial";
+}
+
+<h2>Products</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderProductID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            Subtotal
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr id="OrderProduct-@item.OrderProductID">
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderProductID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+                @Html.TextBox("Quantity-" + item.OrderProductID, item.Quantity)
+                <button type="submit" value="Update" class="btn btn-info btn-group-lg btn_updt" data-assigned-id="@item.OrderProductID" onclick="UpdateOrder(this)" >Update Quantity</button>
+            </td>
+            <td>
+                $@Html.DisplayFor(modelItem => item.Product.Price)
+            </td>
+            <td id="Subtotal-@item.OrderProductID">
+                @{
+                    var a = Convert.ToDouble(item.Quantity);
+                    var b = Convert.ToDouble(item.Product.Price);
+                    var total = a * b;
+                }
+                $@total.ToString("0.00")
+            </td>
+            <td>
+                <button class="btn btn-info btn-group-sm btn_dlt" type="submit" value="Remove" data-assigned-id="@item.OrderProductID" onclick="RemoveOrderProduct(this)">
+                        Remove
+                </button>
+            </td>
+        </tr>
+    }
+</table>
+
+<script>
+    function UpdateOrder(elem) {
+        var itemID = $(elem).data('assigned-id');
+        var quanName = "Quantity-" + itemID;
+        var subName = "Subtotal-" + itemID;
+        var value = $("[name^=" + quanName + "]").val();
+        $.ajax({
+            method: "POST",
+            data: { orderProdID: itemID, newQuantity: value },
+            url: '@Url.Action("UpdateOrder", "Order")',
+
+            success: function (data) {
+                if (data.newQuantity < 1) {
+                    window.alert("Quantity must be greater than 0.");
+                }
+                else
+                {
+                    $("[name^=" + quanName + "]").html(data.newQuantity);
+                    $("[id^=" + subName + "]").html("$" + data.newSubtotal);
+                }
+            }
+        })
+    }
+
+    function RemoveOrderProduct(elem) {
+        var itemID = $(elem).data('assigned-id');
+        var name = "OrderProduct-" + itemID;
+        $.ajax({
+            method: "POST",
+            data: {orderProdID: itemID},
+            url: '@Url.Action("RemoveOrderProduct", "Order")',
+
+            success: function (data) {
+                $("[id^=" + name + "]").remove();
+            }
+        })
+    }
+
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/js")
+}

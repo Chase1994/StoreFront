@@ -1,0 +1,41 @@
+﻿@model StoreFront.Data.Order
+@{
+    ViewBag.Title = "AddressPartial";
+}
+<div class="container">
+    <h2>Address</h2>
+    <hr />
+    <dl class="dl-horizontal container">
+        <dt>
+            Street Address:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.Address1)
+        </dd>
+
+        <dt>
+            City: 
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.City)
+        </dd>
+
+        <dt>
+            State:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.State.StateName)
+        </dd>
+
+        <dt>
+            Zip Code:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.ZipCode)
+        </dd>
+    </dl>
+</div>

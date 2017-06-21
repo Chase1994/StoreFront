@@ -92,6 +92,8 @@
                 <PagerStyle BackColor="#284775" ForeColor="White" HorizontalAlign="Center" />
                 <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
                 </asp:DetailsView>
+            <asp:FileUpload ID="ProductImageUpload" runat="server" CssClass="container" />
+            <asp:Button runat="server" ID="UploadButton" Text="Upload" OnClick="UploadButton_Click" />
                 <asp:SqlDataSource ID="ProductDetailSource" runat="server" ConnectionString="<%$ ConnectionStrings:StoreFrontDBConnectionString %>" DeleteCommand="spDeleteProduct" DeleteCommandType="StoredProcedure" SelectCommand="spGetProduct" SelectCommandType="StoredProcedure" UpdateCommand="spUpdateProduct" UpdateCommandType="StoredProcedure">
                     <DeleteParameters>
                         <asp:Parameter Name="ProductID" Type="Int32" />
@@ -107,6 +109,8 @@
                         <asp:Parameter Name="Price" Type="Decimal" />
                     </UpdateParameters>
                 </asp:SqlDataSource>
+            <br />
+            <asp:Label runat="server" id="StatusLabel" text="Upload status: " />
         </div>
     </div>
 

@@ -7,28 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StoreFront.Models
+namespace StoreFront.Data
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ShoppingCarts
+    public partial class State
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ShoppingCarts()
+        public State()
         {
-            this.ShoppingCartProducts = new HashSet<ShoppingCartProducts>();
+            this.Addresses = new HashSet<Address>();
         }
     
-        public int ShoppingCartID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public Nullable<System.DateTime> DateCreated { get; set; }
-        public string CreatedBy { get; set; }
-        public Nullable<System.DateTime> DateModified { get; set; }
-        public string ModifiedBy { get; set; }
+        public int StateID { get; set; }
+        public string StateAbbrev { get; set; }
+        public string StateName { get; set; }
     
-        public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ShoppingCartProducts> ShoppingCartProducts { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
     }
 }

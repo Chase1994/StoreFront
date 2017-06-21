@@ -28,22 +28,50 @@ namespace StoreFront.Controllers
             return View(cartList.ToList());
         }
 
-        public ActionResult Delete(ShoppingCartProducts cartProd)
+        public ActionResult Delete(int cartItemID)
         {
-            var cartItemID = cartProd.ShoppingCartProductID;
             ShoppingCartProducts itemToDelete = dc.ShoppingCartProducts.Where(a => a.ShoppingCartProductID == cartItemID).FirstOrDefault();
-            if (itemToDelete.Quantity > 1)
+     
+            dc.ShoppingCartProducts.Remove(itemToDelete);
+            dc.SaveChanges();
+
+            Users user = dc.Users.Where(a => a.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
+            var userID = user.UserID;
+            ShoppingCarts cart = dc.ShoppingCarts.FirstOrDefault(a => a.UserID == userID);
+            var cartTotal = cart.ShoppingCartProducts.Sum(c => c.Products.Price * c.Quantity);
+
+            var cartList = dc.ShoppingCartProducts.Where(c => c.ShoppingCartID == cart.ShoppingCartID);
+            var numItems = numItemsInCart(cart.ShoppingCartID);
+            return Json(new { cartTotal, numItems });
+        }
+
+        [HttpPost]
+        public ActionResult Update(int cartProdID, int newQuantity)
+        {
+
+            ShoppingCartProducts cartProd = dc.ShoppingCartProducts.Where(p => p.ShoppingCartProductID == cartProdID).FirstOrDefault();
+
+            Users user = dc.Users.Where(a => a.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
+            var userID = user.UserID;
+
+            ShoppingCarts cart = dc.ShoppingCarts.FirstOrDefault(a => a.UserID == userID);
+
+            if (newQuantity < 1)
             {
-                itemToDelete.Quantity--;
-                dc.SaveChanges();
+                return Json(new { newQuantity });
             }
             else
             {
-                dc.ShoppingCartProducts.Attach(itemToDelete);
-                dc.ShoppingCartProducts.Remove(itemToDelete);
-                dc.SaveChanges();
+                cartProd.Quantity = newQuantity;
             }
-            return RedirectToAction("Index", "Cart");
+            dc.SaveChanges();
+
+            var newSubtotal = cartProd.Products.Price * newQuantity;
+            var cartTotal = cart.ShoppingCartProducts.Sum(c => c.Products.Price * c.Quantity);
+
+            var numItems = numItemsInCart(cart.ShoppingCartID);
+
+            return Json(new {newQuantity, newSubtotal, cartTotal, numItems });
         }
 
         [HttpPost]
@@ -58,16 +86,23 @@ namespace StoreFront.Controllers
                 return Json(0);
             }
             var cartID = cart.ShoppingCartID;
+            var numItems = numItemsInCart(cartID);
+            
+            return Json(numItems);
+        }
 
+        [NonAction]
+        public int? numItemsInCart(int cartID)
+        {
             //grab the products in the cart
             var cartList = dc.ShoppingCartProducts.Where(c => c.ShoppingCartID == cartID);
-            var numItemsInCart = 0;
+            int? numItemsInCart = 0;
             //loop through the ShoppingCartProducts and add up quantity
             foreach (ShoppingCartProducts cartProds in cartList)
             {
                 numItemsInCart += cartProds.Quantity;
             }
-            return Json(numItemsInCart);
+            return numItemsInCart;
         }
     }
 }

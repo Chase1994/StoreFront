@@ -192,21 +192,34 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>StoreFrontEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Images\Atlas-Black.jpg" />
+    <Content Include="Images\Bear-Black.jpg" />
+    <Content Include="Images\Bear-Comic.jpg" />
     <Content Include="Images\blank-skateboard.png" />
-    <Content Include="Images\Girl\Black.jpg" />
-    <Content Include="Images\Girl\Green.jpg" />
-    <Content Include="Images\Girl\Red.jpg" />
+    <Content Include="Images\Black.jpg" />
+    <Content Include="Images\Green.jpg" />
+    <Content Include="Images\Independent-Black.jpg" />
+    <Content Include="Images\Independent-Silver.jpg" />
+    <Content Include="Images\Krux-Jellybean.jpg" />
+    <Content Include="Images\Krux-PinkBlue.jpg" />
+    <Content Include="Images\Red.jpg" />
+    <Content Include="Images\Ricta-BlackWhite.jpg" />
+    <Content Include="Images\Ricta-White.jpg" />
     <Content Include="Images\Shred-logo.png" />
-    <Content Include="Images\SkateboardPics\skateboard-img1.jpg" />
-    <Content Include="Images\SkateboardPics\skateboard-img2.jpg" />
-    <Content Include="Images\SkateboardPics\skateboard-img3.jpg" />
+    <Content Include="Images\skateboard-img1.jpg" />
+    <Content Include="Images\skateboard-img2.jpg" />
+    <Content Include="Images\skateboard-img3.jpg" />
     <Content Include="Images\skateboard_logos.jpg" />
-    <Content Include="Images\Girl\Yellow.jpg" />
-    <Content Include="Images\SkateboardPics\skateforcause.jpg" />
-    <Content Include="Images\ToyMachine\SkateDate.jpg" />
-    <Content Include="Images\ToyMachine\StreetBeers.jpg" />
-    <Content Include="Images\SkateboardPics\transworld-skateboarding.png" />
-    <Content Include="Images\WorldIndustries\Devil.jpg" />
+    <Content Include="Images\Speedlab-Pink.jpg" />
+    <Content Include="Images\Spitfire-Pink.jpg" />
+    <Content Include="Images\Spitfire-Purple.jpg" />
+    <Content Include="Images\Spitfire-YellowBlack.jpg" />
+    <Content Include="Images\Yellow.jpg" />
+    <Content Include="Images\skateforcause.jpg" />
+    <Content Include="Images\SkateDate.jpg" />
+    <Content Include="Images\StreetBeers.jpg" />
+    <Content Include="Images\transworld-skateboarding.png" />
+    <Content Include="Images\Devil.jpg" />
     <Content Include="Models\StoreFrontEntities.edmx.diagram">
       <DependentUpon>StoreFrontEntities.edmx</DependentUpon>
     </Content>
@@ -288,6 +301,8 @@
     <Compile Include="Controllers\AddToCartController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\PlaceOrderController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Crypto.cs" />
@@ -398,6 +413,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\PlaceOrder\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -411,6 +427,11 @@
     <Content Include="Views\Shared\_MemberPartial.cshtml" />
     <Content Include="Views\User\EditProfile.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Order\OrdersAdmin.cshtml" />
+    <Content Include="Views\Order\OrderAdminDetails.cshtml" />
+    <Content Include="Views\Order\_GeneralPartial.cshtml" />
+    <Content Include="Views\Order\_AddressPartial.cshtml" />
+    <Content Include="Views\Order\_ProductPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -420,6 +441,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StoreFront.Data\StoreFront.Data.csproj">
+      <Project>{032e68e8-d271-449e-a68f-aca0adc49d18}</Project>
+      <Name>StoreFront.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

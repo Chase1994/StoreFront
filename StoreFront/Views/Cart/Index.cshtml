@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<StoreFront.Models.ShoppingCartProducts>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Shopping Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
     double totalPrice = 0;
 }
@@ -30,17 +30,21 @@
 
 @foreach (var item in Model)
 {
-    <tr>
+    <tr id="CartItem-@item.ShoppingCartProductID">
         <td>
             @Html.DisplayFor(modelItem => item.Products.ProductName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Quantity)
+            @{
+                int cartProdID = item.ShoppingCartProductID;
+             }
+             @Html.TextBox("Quantity-" + item.ShoppingCartProductID, item.Quantity)
+             <button type="submit" value="Update" class="btn btn-info btn-group-lg btn_updt" data-assigned-id ="@cartProdID" onclick="UpdateQuantity(this)">Update Cart</button>
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Products.Price)
+            $@Html.DisplayFor(modelItem => item.Products.Price)
         </td>
-        <td>
+        <td id="Subtotal-@item.ShoppingCartProductID">
             @{ 
                 var a = Convert.ToDouble(item.Quantity);
                 var b = Convert.ToDouble(item.Products.Price);
@@ -48,31 +52,73 @@
                 total = Math.Round(total, 2);
                 totalPrice += total;
             }
-            @total
+            $@total
         </td>
         <td>
             @if (item.Products.ImageFile != null)
             {
-                <a href="#"><img src="@Url.Content(item.Products.ImageFile)" class="img-responsive" /></a>
+                <a href="#"><img src="../../Images/@Url.Content(item.Products.ImageFile)" class="img-responsive" /></a>
             }
         </td>
 
         <td>
-            <a href="@Url.Action("Delete", "Cart", item)" class="btn btn-info btn-group-sm btn_dlt">
+            <button class="btn btn-info btn-group-sm btn_dlt" type="submit" value="Remove" data-assigned-id ="@item.ShoppingCartProductID" onclick="RemoveItem(this)">
                 <span class="glyphicon glyphicon-shopping-cart"></span> Remove From Cart
-            </a>
+            </button>
         </td>
     </tr>
 }
 
 </table>
 <div class="container-fluid text-center">
-    <h3>Total: $@totalPrice</h3>
+    <h3>Total: $@totalPrice.ToString("0.00")</h3>
+    <button type="submit" class="btn btn-info btn-group-sm" value="Place Order" style="margin-left:80%">Place Order</button>
 </div>
+
 <script>
-    $(".btn_dlt").click(function () {
-        window.alert("Item successfully deleted from your cart.");
-    });
+
+    function UpdateQuantity(elem) {
+        var itemID = $(elem).data('assigned-id');
+        var quanName = "Quantity-" + itemID;
+        var subName = "Subtotal-" + itemID;
+        var value = $("[name^=" + quanName + "]").val();
+        $.ajax({
+            method: "POST",
+            data: { cartProdID: itemID, newQuantity: value },
+            url: '@Url.Action("Update", "Cart")',
+
+            success: function (data) {
+                if (data.newQuantity < 1) {
+                    window.alert("Quantity must be greater than 0.");
+                }
+                else
+                {
+                    $("[name^=" + quanName + "]").html(data.newQuantity);
+                    $("[id^=" + subName + "]").html("$" + data.newSubtotal);
+                    $("#cart").html(data.numItems);
+                    $("h3").html("Total: $" + data.cartTotal);
+                }
+                
+            }
+        })
+    }
+
+    function RemoveItem(elem) {
+        var itemID = $(elem).data('assigned-id');
+        var name = "CartItem-" + itemID;
+        $.ajax({
+            method: "POST",
+            data: {cartItemID: itemID},
+            url: '@Url.Action("Delete", "Cart")',
+
+            success: function (data) {
+                $("[id^=" + name + "]").remove();
+                $("#cart").html(data.numItems);
+                $("h3").html("Total: $" + data.cartTotal);
+            }
+        })
+    }
+
 </script>
 
 @section Scripts {

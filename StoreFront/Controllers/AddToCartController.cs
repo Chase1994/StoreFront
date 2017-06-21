@@ -12,7 +12,7 @@ namespace StoreFront.Controllers
     {
         StoreFrontDBEntities dc = new StoreFrontDBEntities();
 
-        public ActionResult AddProduct(Products prod)
+        public ActionResult AddProduct(int prodID)
         {
             Users user = dc.Users.Where(a => a.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
             var userID = user.UserID;
@@ -34,11 +34,11 @@ namespace StoreFront.Controllers
             var cartID = cart.ShoppingCartID;
 
             //make new product to add to cart
-            var cartProdExists = isItemInCart(cartID, prod.ProductID);
+            var cartProdExists = isItemInCart(cartID, prodID);
 
             if (cartProdExists)
             {
-                ShoppingCartProducts existProd = dc.ShoppingCartProducts.Where(a => a.ShoppingCartID == cartID).Where(a => a.ProductID == prod.ProductID).FirstOrDefault();
+                ShoppingCartProducts existProd = dc.ShoppingCartProducts.Where(a => a.ShoppingCartID == cartID).Where(a => a.ProductID == prodID).FirstOrDefault();
                 existProd.Quantity++;
                 //push updated ShoppingCartProduct to database
 
@@ -48,14 +48,20 @@ namespace StoreFront.Controllers
             {
                 ShoppingCartProducts cartProd = new ShoppingCartProducts();
                 cartProd.ShoppingCartID = cartID;
-                cartProd.ProductID = prod.ProductID;
+                cartProd.ProductID = prodID;
                 cartProd.Quantity = 1;
                 dc.ShoppingCartProducts.Add(cartProd);
                 dc.SaveChanges();
 
             }
-
-            return RedirectToAction("Index", "Products");
+            var cartList = dc.ShoppingCartProducts.Where(c => c.ShoppingCartID == cart.ShoppingCartID);
+            int? numItemsInCart = 0;
+            //loop through the ShoppingCartProducts and add up quantity
+            foreach (ShoppingCartProducts cartProds in cartList)
+            {
+                numItemsInCart += cartProds.Quantity;
+            }
+            return Json(numItemsInCart);
         }
 
         [NonAction]

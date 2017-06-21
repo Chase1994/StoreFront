@@ -7,28 +7,35 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StoreFront.Models
+namespace StoreFront.Data
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class ShoppingCarts
+    public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ShoppingCarts()
+        public Product()
         {
-            this.ShoppingCartProducts = new HashSet<ShoppingCartProducts>();
+            this.OrderProducts = new HashSet<OrderProduct>();
+            this.ShoppingCartProducts = new HashSet<ShoppingCartProduct>();
         }
     
-        public int ShoppingCartID { get; set; }
-        public Nullable<int> UserID { get; set; }
+        public int ProductID { get; set; }
+        public string ProductName { get; set; }
+        public string ProductDescription { get; set; }
+        public Nullable<bool> IsPublished { get; set; }
+        public Nullable<int> Quantity { get; set; }
+        public Nullable<decimal> Price { get; set; }
+        public string ImageFile { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public string CreatedBy { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }
         public string ModifiedBy { get; set; }
     
-        public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ShoppingCartProducts> ShoppingCartProducts { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; }
     }
 }

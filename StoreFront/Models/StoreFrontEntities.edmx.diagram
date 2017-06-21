@@ -9,7 +9,7 @@
         <EntityTypeShape EntityType="StoreFrontDBModel.OrderProducts" Width="1.5" PointX="7.5" PointY="4.125" IsExpanded="true" />
         <EntityTypeShape EntityType="StoreFrontDBModel.Orders" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="StoreFrontDBModel.Products" Width="1.5" PointX="5.25" PointY="9.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="StoreFrontDBModel.ShoppingCartProducts" Width="1.5" PointX="7.5" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="StoreFrontDBModel.ShoppingCartProducts" Width="1.5" PointX="7.375" PointY="10.25" IsExpanded="true" />
         <EntityTypeShape EntityType="StoreFrontDBModel.ShoppingCarts" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
         <EntityTypeShape EntityType="StoreFrontDBModel.States" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="StoreFrontDBModel.Status" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
@@ -23,6 +23,7 @@
         <AssociationConnector Association="StoreFrontDBModel.FK_Orders_Users" ManuallyRouted="false" />
         <AssociationConnector Association="StoreFrontDBModel.FK_ShoppingCartProducts_ShoppingCarts" ManuallyRouted="false" />
         <AssociationConnector Association="StoreFrontDBModel.FK_ShoppingCarts_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="StoreFrontDBModel.FK_ShoppingCartProducts_ShoppingCarts1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
