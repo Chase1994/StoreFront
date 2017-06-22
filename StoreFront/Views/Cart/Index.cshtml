@@ -4,6 +4,8 @@
     ViewBag.Title = "Shopping Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
     double totalPrice = 0;
+    var userName = HttpContext.Current.User.Identity.Name;
+
 }
 
 <h2>@HttpContext.Current.User.Identity.Name's <span class="glyphicon glyphicon-shopping-cart"></span></h2>
@@ -72,7 +74,7 @@
 </table>
 <div class="container-fluid text-center">
     <h3>Total: $@totalPrice.ToString("0.00")</h3>
-    <button type="submit" class="btn btn-info btn-group-sm" value="Place Order" style="margin-left:80%">Place Order</button>
+    @Html.ActionLink("Place Order", "Address", "PlaceOrder", new { name = userName }, null)
 </div>
 
 <script>
@@ -112,7 +114,7 @@
             url: '@Url.Action("Delete", "Cart")',
 
             success: function (data) {
-                $("[id^=" + name + "]").remove();
+                $("[id^=" + name + "]").fadeOut(325);
                 $("#cart").html(data.numItems);
                 $("h3").html("Total: $" + data.cartTotal);
             }

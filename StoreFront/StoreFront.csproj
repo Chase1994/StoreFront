@@ -413,7 +413,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\PlaceOrder\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -432,6 +431,7 @@
     <Content Include="Views\Order\_GeneralPartial.cshtml" />
     <Content Include="Views\Order\_AddressPartial.cshtml" />
     <Content Include="Views\Order\_ProductPartial.cshtml" />
+    <Content Include="Views\PlaceOrder\Address.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

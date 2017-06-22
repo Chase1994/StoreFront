@@ -1,0 +1,34 @@
+﻿@model IEnumerable<StoreFront.Data.Address>
+
+@{
+    ViewBag.Title = "Address";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Address</h2>
+
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        <span id="selected">Chose option</span>
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        @foreach(var item in Model)
+        {
+            <li><a href="#">@Html.DisplayFor(model => item.Address1)</a></li>
+        }
+        <li><a href="#">New Address</a></li>
+    </ul>
+</div> 
+
+<script>
+    $('.dropdown-menu a').click(function () {
+        $('#selected').text($(this).text());
+    });
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/js")
+}

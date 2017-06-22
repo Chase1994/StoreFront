@@ -59,6 +59,7 @@ namespace StoreFront.Controllers
             var newSubtotal = theOrderProd.Product.Price * newQuantity;
             return Json(new { newQuantity, newSubtotal });
         }
+
         [HttpPost]
         public ActionResult RemoveOrderProduct(int orderProdID)
         {
