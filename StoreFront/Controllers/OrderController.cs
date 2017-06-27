@@ -13,14 +13,14 @@ namespace StoreFront.Controllers
     {
         StoreFront.Data.StoreFrontDataEntities dc = new StoreFront.Data.StoreFrontDataEntities();
         // GET: Order
+        [Authorize]
         public ActionResult OrdersAdmin()
         {
-            var orders = from o in dc.Orders
-                         select o;
-            return View(orders);
+            return View(dc.Orders);
 
         }
         // GET: Order/Details/5
+        [Authorize]
         public ActionResult OrderAdminDetails(int id)
         {
             Order editOrder = dc.Orders.Where(o => o.OrderID == id).FirstOrDefault();

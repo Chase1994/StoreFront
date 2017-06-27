@@ -15,6 +15,10 @@ namespace StoreFront.Controllers
         public ActionResult AddProduct(int prodID)
         {
             Users user = dc.Users.Where(a => a.UserName == HttpContext.User.Identity.Name).FirstOrDefault();
+            if (user == null)
+            {
+                return View();
+            }
             var userID = user.UserID;
             var exists = doesUserCartExist(userID);
 

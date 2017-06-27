@@ -13,6 +13,7 @@ namespace StoreFront.Controllers
     {
         private StoreFrontDBEntities dc = new StoreFrontDBEntities();
         // GET: Cart
+        [Authorize]
         public ActionResult Index()
         {
             //get userID

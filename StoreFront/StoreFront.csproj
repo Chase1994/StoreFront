@@ -432,6 +432,9 @@
     <Content Include="Views\Order\_AddressPartial.cshtml" />
     <Content Include="Views\Order\_ProductPartial.cshtml" />
     <Content Include="Views\PlaceOrder\Address.cshtml" />
+    <Content Include="Views\PlaceOrder\_AddressCreatePartial.cshtml" />
+    <Content Include="Views\PlaceOrder\ConfirmOrder.cshtml" />
+    <Content Include="Views\PlaceOrder\SubmitOrder.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

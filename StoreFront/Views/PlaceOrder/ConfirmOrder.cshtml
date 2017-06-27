@@ -1,0 +1,124 @@
+﻿@model IEnumerable<StoreFront.Data.ShoppingCartProduct>
+
+@{
+    ViewBag.Title = "ConfirmOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var totalPrice = 0.00;
+    var addressID = (int)ViewBag.AddressID;
+    StoreFront.Data.StoreFrontDataEntities dc = new StoreFront.Data.StoreFrontDataEntities();
+    var address = dc.Addresses.Where(a => a.AddressID == addressID).FirstOrDefault();
+}
+
+<h2>Confirm Order</h2>
+<div class="container">
+    <dl class="dl-horizontal container">
+        <dt>
+            Street Address:
+        </dt>
+
+        <dd>
+            @Html.DisplayName(address.Address1)
+        </dd>
+        @{
+            if (address.Address2 != null)
+            {
+                <dd>
+                    @Html.DisplayName(address.Address2)
+                </dd>
+            }
+            else if (address.Address3 != null)
+            {
+                <dd>
+                    @Html.DisplayName(address.Address3)
+                </dd>
+            }
+         }
+        <dt>
+            City:
+        </dt>
+
+        <dd>
+            @Html.DisplayName(address.City)
+        </dd>
+
+        <dt>
+            State:
+        </dt>
+
+        <dd>
+            @Html.DisplayName(address.State.StateName)
+        </dd>
+
+        <dt>
+            Zip Code:
+        </dt>
+
+        <dd>
+            @Html.DisplayName(address.ZipCode)
+        </dd>
+    </dl>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Product
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product.Price)
+        </th>
+        <th>
+            Subtotal
+        </th>
+        <th>
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.ProductName)
+        </td>
+        <td>
+            @{
+                int cartProdID = item.ShoppingCartProductID;
+            }
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            $@Html.DisplayFor(modelItem => item.Product.Price)
+        </td>
+        <td id="Subtotal-@item.ShoppingCartProductID">
+            @{
+                var a = Convert.ToDouble(item.Quantity);
+                var b = Convert.ToDouble(item.Product.Price);
+                var total = a * b;
+                total = Math.Round(total, 2);
+                totalPrice += total;
+            }
+            $@total
+        </td>
+        <td>
+            @if (item.Product.ImageFile != null)
+            {
+                <a href="#"><img src="../../Images/@Url.Content(item.Product.ImageFile)" class="img-responsive" /></a>
+            }
+        </td>
+</tr>
+}
+</table>
+
+<h2>
+    Total Cost: @totalPrice.ToString("$0.00")
+</h2>
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        @Html.ActionLink("Submit Order", "SubmitOrder", "PlaceOrder", new { id = addressID, total = totalPrice }, new { @class = "btn btn-primary" })
+    </div>
+</div>   
+

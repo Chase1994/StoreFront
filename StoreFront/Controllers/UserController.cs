@@ -170,6 +170,7 @@ namespace StoreFront.Controllers
             }
         }
         [HttpPost]
+        [Authorize]
         public ActionResult EditProfile(Users userprofile)
         {
             StoreFrontDBEntities dc = new StoreFrontDBEntities();

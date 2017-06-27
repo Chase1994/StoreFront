@@ -10,13 +10,13 @@ using StoreFront.Models;
 using PagedList;
 using PagedList.Mvc;
 using System.Data.Entity.Infrastructure;
-
+using StoreFront.Data;
 
 namespace StoreFront.Controllers
 {
     public class ProductsController : Controller
     {
-        private StoreFrontDBEntities db = new StoreFrontDBEntities();
+        private StoreFrontDataEntities db = new StoreFrontDataEntities();
 
         // GET: Products
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -36,31 +36,31 @@ namespace StoreFront.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var products = from p in db.Products
+            var product = from p in db.Products
                            select p;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(p => p.ProductName.Contains(searchString));
+                product = product.Where(p => p.ProductName.Contains(searchString));
             }
             switch (sortOrder)
             {
                 case "name_desc":
-                    products = products.OrderByDescending(p => p.ProductName);
+                    product = product.OrderByDescending(p => p.ProductName);
                     break;
                 case "Price":
-                    products = products.OrderBy(p => p.Price);
+                    product = product.OrderBy(p => p.Price);
                     break;
                 case "price_desc":
-                    products = products.OrderByDescending(p => p.Price);
+                    product = product.OrderByDescending(p => p.Price);
                     break;
                 default: //name ascending
-                    products = products.OrderBy(p => p.ProductName);
+                    product = product.OrderBy(p => p.ProductName);
                     break;
             }
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(products.ToPagedList(pageNumber, pageSize));
+            return View(product.ToPagedList(pageNumber, pageSize));
         }
 
         protected override void Dispose(bool disposing)
