@@ -6,6 +6,7 @@
 //     Manual changes to this file will be overwritten if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations;
 
 namespace StoreFront.Data
 {
@@ -22,12 +23,21 @@ namespace StoreFront.Data
     
         public int AddressID { get; set; }
         public int UserID { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Atleast one Address line is required.")]
         public string Address1 { get; set; }
+
         public string Address2 { get; set; }
         public string Address3 { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "City is required.")]
         public string City { get; set; }
+
         public Nullable<int> StateID { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "ZipCode is required.")]
         public string ZipCode { get; set; }
+
         public Nullable<bool> IsBilling { get; set; }
         public Nullable<bool> IsShipping { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }

@@ -2,14 +2,16 @@
 @{ 
     ViewBag.Title = "AddressCreatePartial";
 }
-@using (Html.BeginForm("Address", "PlaceOrder", FormMethod.Post)) 
+
+
+@using (Html.BeginForm("Address", "PlaceOrder", FormMethod.Post, new { id = "addressForm" }))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
         <h3>Add A New Address</h3>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "Failed to add a new address.", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.Address1, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -65,3 +67,9 @@
         </div>
     </div>
 }
+
+<script>
+    $(document).ready(function () {
+        $.validator.unobtrusive.parse("#addressForm");
+    });
+</script>

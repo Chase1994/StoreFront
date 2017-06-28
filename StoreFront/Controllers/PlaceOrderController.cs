@@ -105,7 +105,6 @@ namespace StoreFront.Controllers
             {
                 newAddress.CreatedBy = HttpContext.User.Identity.Name;
                 newAddress.DateCreated = System.DateTime.Now;
-                var test = newAddress.StateID;
                 //get userID
                 newAddress.UserID = getUserID();
 
