@@ -34,6 +34,7 @@ namespace StoreFront
             {
                 try
                 {
+                    //saves the file to folder
                     string q = Request.QueryString["ProductID"];
                     string imgName = Path.GetFileName(ProductImageUpload.FileName);
                     ProductImageUpload.SaveAs(Server.MapPath("~/Images/") + imgName);

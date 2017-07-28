@@ -9,9 +9,11 @@ namespace StoreFront.Data
     public class InventoryRepository
     {
         StoreFrontDataEntities db = new StoreFrontDataEntities();
+
         public List<Product> SearchProducts(string searchText)
         {
-            List<Product> prodList = db.Products.Where(a => a.ProductName.Contains(searchText) || a.ProductDescription.Contains(searchText)).ToList();
+            List<Product> prodList = db.Products.Where(p => p.IsPublished == true).ToList();
+            prodList = prodList.Where(a => a.ProductName.Contains(searchText) || a.ProductDescription.Contains(searchText)).ToList();
             return prodList;
         }
 

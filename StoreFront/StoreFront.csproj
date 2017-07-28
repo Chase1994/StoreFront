@@ -53,6 +53,9 @@
     <Reference Include="FoolproofValidation, Version=0.9.5851.39121, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Foolproof.0.9.4518\lib\net45\FoolproofValidation.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.EntityDataSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.EntityDataSource.6.0.0\lib\net40\Microsoft.AspNet.EntityDataSource.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -70,6 +73,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
@@ -171,6 +175,13 @@
     <Content Include="Client Scripts\MvcFoolproofJQueryValidation.min.js" />
     <Content Include="Client Scripts\MvcFoolproofValidation.js" />
     <Content Include="Client Scripts\MvcFoolproofValidation.min.js" />
+    <Content Include="WebServiceTest.aspx" />
+    <None Include="Connected Services\InventoryServiceReference\configuration91.svcinfo" />
+    <None Include="Connected Services\InventoryServiceReference\configuration.svcinfo" />
+    <None Include="Connected Services\InventoryServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -222,6 +233,20 @@
     <Content Include="Images\Devil.jpg" />
     <Content Include="Models\StoreFrontEntities.edmx.diagram">
       <DependentUpon>StoreFrontEntities.edmx</DependentUpon>
+    </Content>
+    <Content Include="Properties\DataSources\StoreFront.Data.Product.datasource" />
+    <None Include="Connected Services\InventoryServiceReference\service.wsdl" />
+    <None Include="Connected Services\InventoryServiceReference\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\InventoryServiceReference\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\InventoryServiceReference\StoreFront.InventoryService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\InventoryServiceReference\StoreFront.InventoryServiceReference.ProductItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Models\StoreFrontEntities.Context.tt">
@@ -296,6 +321,11 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Connected Services\InventoryServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -408,12 +438,20 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
+    <Compile Include="SqlSecurityManager.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WebServiceTest.aspx.cs">
+      <DependentUpon>WebServiceTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebServiceTest.aspx.designer.cs">
+      <DependentUpon>WebServiceTest.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -455,6 +493,12 @@
       <Project>{032e68e8-d271-449e-a68f-aca0adc49d18}</Project>
       <Name>StoreFront.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\InventoryServiceReference\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

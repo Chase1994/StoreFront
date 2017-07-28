@@ -6,11 +6,13 @@ using System.Web.Mvc;
 using StoreFront.Models;
 using System.Data.Entity.Validation;
 using System.Web.Security;
-
+using StoreFront.Data;
 namespace StoreFront.Controllers
 {
     public class UserController : Controller
     {
+        SqlSecurityManager sm = new SqlSecurityManager();
+        StoreFrontDataEntities dc = new StoreFrontDataEntities();
         //Registration Action
         [HttpGet]
         public ActionResult Registration()
@@ -21,7 +23,7 @@ namespace StoreFront.Controllers
         //Registration POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Registration([Bind(Exclude= "DateModified, ModifiedBy")]Users user)
+        public ActionResult Registration([Bind(Exclude= "DateModified, ModifiedBy")]User user)
         {
             bool Status = false;
             string message = "";
@@ -29,49 +31,15 @@ namespace StoreFront.Controllers
             //Model Validation
             if (ModelState.IsValid)
             {
+                //check to see if the username exists in the database already
                 var exists = doesUserNameExist(user.UserName);
                 if (exists)
                 {
+                    //throw error if username already exists
                     ModelState.AddModelError("UserNameExist", "User Name is already in use. Try another.");
                     return View(user);
                 }
-
-                user.Password = Crypto.HashPassword(user.Password);
-                user.IsAdmin = false;
-                user.DateCreated = System.DateTime.Now;
-                user.CreatedBy = user.UserName;
-                user.ConfirmPassword = user.Password;
-
-                using (StoreFrontDBEntities dc = new StoreFrontDBEntities())
-                {
-                    //for debugging purposes (Entity Validation Exceptions)
-                    dc.Users.Add(user);
-                    try
-                    {
-                        dc.SaveChanges();
-                        message = " You have successfully registered your account. Well done, that took a lot of skill. " +
-                            " You should be proud of yourself!";
-                        Status = true;
-                    }
-                    catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
-                    {
-                        Exception raise = dbEx;
-                        foreach (var validationErrors in dbEx.EntityValidationErrors)
-                        {
-                            foreach (var validationError in validationErrors.ValidationErrors)
-                            {
-                                string message1 = string.Format("{0}:{1}",
-                                    validationErrors.Entry.Entity.ToString(),
-                                    validationError.ErrorMessage);
-                                // raise a new exception nesting
-                                // the current instance as InnerException
-                                raise = new InvalidOperationException(message1, raise);
-                            }
-                        }
-                        throw raise;
-                    }
-                }
-
+                sm.RegisterUser(user);
             }
             else
             {
@@ -96,10 +64,11 @@ namespace StoreFront.Controllers
             string message = "";
             using (StoreFrontDBEntities dc = new StoreFrontDBEntities())
             {
-                var v = dc.Users.Where(a => a.UserName == login.UserName).FirstOrDefault();
-                if (v != null)
+                //check if user is in database
+                var user = dc.Users.Where(a => a.UserName == login.UserName).FirstOrDefault();
+                if (user != null)
                 {
-                    if (Crypto.ValidatePassword(login.Password, v.Password))
+                    if (Crypto.ValidatePassword(login.Password, user.Password))
                     {
                         int timeout = login.RememberMe ? 525600 : 20;
                         var ticket = new FormsAuthenticationTicket(login.UserName, login.RememberMe, timeout);
@@ -135,6 +104,7 @@ namespace StoreFront.Controllers
         [Authorize]
         public ActionResult Logout()
         {
+            //clear session and sign the user out of FormsAuthentication
             Session.Clear();
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "User");
@@ -143,6 +113,7 @@ namespace StoreFront.Controllers
         [NonAction]
         public bool doesUserNameExist(string userName)
         {
+            //check if username exists in database already
             using (StoreFrontDBEntities dc = new StoreFrontDBEntities())
             {
                 var v = dc.Users.Where(a => a.UserName == userName).FirstOrDefault();
@@ -150,6 +121,7 @@ namespace StoreFront.Controllers
             }
         }
 
+        //currently broken, need to update
         [Authorize]
         public ActionResult EditProfile()
         {
@@ -169,6 +141,7 @@ namespace StoreFront.Controllers
                 return RedirectToAction("Login", "User");
             }
         }
+        //also broken, needs fixed
         [HttpPost]
         [Authorize]
         public ActionResult EditProfile(Users userprofile)

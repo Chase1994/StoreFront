@@ -18,13 +18,15 @@ namespace StoreFront.Controllers
     {
         private StoreFrontDataEntities db = new StoreFrontDataEntities();
 
-        // GET: Products
+        
         public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            //viewbag variables to handle sorting of products
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.PriceSortParm = sortOrder == "Price" ? "price_desc" : "Price";
 
+            //if the searchstring has something in it, set the page back to 1
             if (searchString != null)
             {
                 page = 1;
@@ -34,15 +36,20 @@ namespace StoreFront.Controllers
                 searchString = currentFilter;
             }
 
+            //set CurrentFilter to whatever the searchstring is
             ViewBag.CurrentFilter = searchString;
 
+            //grab products in the database
             var product = from p in db.Products
                            select p;
 
+            //if the searchString exists, grab all products that contain the string
             if (!String.IsNullOrEmpty(searchString))
             {
                 product = product.Where(p => p.ProductName.Contains(searchString));
             }
+
+            //handles sorting for ascending and descending based on price and name
             switch (sortOrder)
             {
                 case "name_desc":
@@ -58,6 +65,8 @@ namespace StoreFront.Controllers
                     product = product.OrderBy(p => p.ProductName);
                     break;
             }
+
+            //paging set to 10
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(product.ToPagedList(pageNumber, pageSize));

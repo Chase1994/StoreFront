@@ -19,6 +19,7 @@ namespace StoreFront.Controllers
 
             //grab address information for user
             var addresses = dc.Addresses.Where(a => a.UserID == userID);
+
             //user addresses
             ViewBag.Addresses = new SelectList(addresses, "AddressID", "Address1");
 
@@ -30,6 +31,7 @@ namespace StoreFront.Controllers
 
         public ActionResult SelectedAddress([Bind(Exclude = "IsBilling, IsShipping, DateModified, ModifiedBy, Address1, Address2, Address3")]Address selectedAddress)
         {
+            //store addressID in a variable to pass to action
             var selectedAddressID = selectedAddress.AddressID;
             return RedirectToAction("ConfirmOrder", "PlaceOrder", new { addressID = selectedAddressID });
         }
@@ -50,9 +52,11 @@ namespace StoreFront.Controllers
         //last screen
         public ActionResult SubmitOrder(int id, double total)
         {
+            //set variables to use for adding new order record
             var userID = getUserID();
             var addressID = id;
             var timeNow = System.DateTime.Now;
+
             //create new order for user
             Order newOrder = new Order();
             newOrder.UserID = userID;
@@ -60,26 +64,27 @@ namespace StoreFront.Controllers
             newOrder.OrderDate = timeNow;
             newOrder.Total = Convert.ToDecimal(total);
             newOrder.StatusID = 1;
+
             //save order to database
             dc.Orders.Add(newOrder);
             dc.SaveChanges();
 
-            //grab the new order from database
-            var order = dc.Orders.Where(u => u.UserID == userID).Where(p => p.AddressID == addressID).Where(t => t.Total == newOrder.Total).FirstOrDefault();
             //grab user's current cart and list of items in cart
             var cart = dc.ShoppingCarts.Where(u => u.UserID == userID).FirstOrDefault();
             var cartList = dc.ShoppingCartProducts.Where(c => c.ShoppingCartID == cart.ShoppingCartID).ToList();
+
             //create an orderproduct for each product in user's cart
             foreach (var item in cartList)
             {
                 var orderProd = new OrderProduct();
-                orderProd.OrderID = order.OrderID;
+                orderProd.OrderID = newOrder.OrderID;
                 orderProd.ProductID = item.ProductID;
                 orderProd.Quantity = item.Quantity;
                 orderProd.Price = item.Product.Price;
                 dc.OrderProducts.Add(orderProd);
                 dc.SaveChanges();
             }
+
             //remove all items from user's cart
             dc.ShoppingCartProducts.RemoveRange(dc.ShoppingCartProducts.Where(c => c.ShoppingCartID == cart.ShoppingCartID));
             dc.SaveChanges();
@@ -89,6 +94,7 @@ namespace StoreFront.Controllers
 
         public int getUserID()
         {
+            //grab logged in username from Identity
             var user = dc.Users.Where(u => u.UserName.Equals(HttpContext.User.Identity.Name)).FirstOrDefault();
             var userID = user.UserID;
             return userID;
@@ -103,8 +109,10 @@ namespace StoreFront.Controllers
 
             if (ModelState.IsValid)
             {
+                //for record keeping purposes
                 newAddress.CreatedBy = HttpContext.User.Identity.Name;
                 newAddress.DateCreated = System.DateTime.Now;
+
                 //get userID
                 newAddress.UserID = getUserID();
 

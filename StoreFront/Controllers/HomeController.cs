@@ -8,19 +8,18 @@ namespace StoreFront.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
+
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Home/Details/5
+        
         public ActionResult Search()
         {
             return View();
         }
 
-        // GET: Home/Create
         [Authorize]
         public new ActionResult Profile()
         {
