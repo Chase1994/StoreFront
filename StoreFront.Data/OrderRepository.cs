@@ -25,14 +25,7 @@ namespace StoreFront.Data
             }
             else
             {
-                for (var date = startDate; date <= endDate; date = date.AddDays(1))
-                {
-                    var orders = db.Orders.Where(o => o.OrderDate == date).ToList();
-                    foreach (var item in orders)
-                    {
-                        orderList.Add(item);
-                    }
-                }
+                orderList = db.Orders.Where(o => o.OrderDate >= startDate && o.OrderDate <= endDate).ToList();
             }
             return orderList;
         }
