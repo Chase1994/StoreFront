@@ -122,8 +122,7 @@ namespace StoreFront.Controllers
                     {
                         dc.Addresses.Add(newAddress);
                         dc.SaveChanges();
-                        message = " You have successfully added a new address. Well done, that took a lot of skill. " +
-                                " You should be proud of yourself!";
+                        message = " You have successfully added a new address.";
                         Status = true;
                     }
                     catch
@@ -137,7 +136,7 @@ namespace StoreFront.Controllers
             }
             else
             {
-                message = " Ya done goofed, check your inputs again mate.";
+                message = "Error, check inputs.";
             }
 
             ViewBag.Message = message;

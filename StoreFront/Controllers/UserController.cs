@@ -43,7 +43,7 @@ namespace StoreFront.Controllers
             }
             else
             {
-                message = " Ya done goofed, check your inputs again mate.";
+                message = "Error.";
             }
 
             ViewBag.Message = message;
